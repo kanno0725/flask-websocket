@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, send, emit
 import time
 import random
+from get_data import get_mem_rate
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -66,7 +67,7 @@ def button():
     #for i in range(10):
     emit('start_button_state_update', broadcast=True)
     while(not is_stop):
-        emit('graph_update',{'data': random.random()}, broadcast=True)
+        emit('graph_update',{'data': get_mem_rate()}, broadcast=True)
         time.sleep(1)
 
 @socketio.on('end')

@@ -60,15 +60,29 @@
 
 
       var chart_data = []
-      var chart_labels = [0,1,2,3,4,5,6,7,8,9]
+      var chart_labels = []
+      var display_num = 20
 
       // スタートボタンが押されたとき、グラフを更新
       socket.on('graph_update', function(msg) {
         var elem = document.getElementById("data");
         elem.innerHTML = msg.data;
         chart_data[chart_data.length] = Number(msg.data);
+        if(chart_data.length > display_num){
+            chart_data.splice(0,chart_data.length - display_num);
+        }
         myChart.data.datasets[0].data = chart_data;
-        chart_labels[chart_labels.length] = chart_labels.length
+
+        var now = new Date();
+        var Hour = now.getHours();
+        var Min = now.getMinutes();
+        var Sec = now.getSeconds();
+        var time = Hour + ':' + Min + ':' + Sec
+
+        chart_labels[chart_labels.length] = time;
+        if(chart_labels.length > display_num){
+            chart_labels.splice(0,chart_labels.length - display_num);
+        }
         myChart.data.labels = chart_labels;
 
         myChart.update();
@@ -89,10 +103,17 @@
         }],
     },
     options: {
-        y: {
-        min: 0,
-        max: 60,
-        },
+        scales: {
+        yAxes: [ 
+            {
+                ticks: {          
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                    stepSize: 5
+                }
+            }
+        ]
+        }
     },
     });
     </script>
