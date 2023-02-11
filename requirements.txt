@@ -1,0 +1,8 @@
+Flask
+jinja2
+flask-socketio
+Flask-Sockets==0.2.1      
+gunicorn==19.9.0
+gevent==1.4.0      
+gevent-websocket==0.10.1
+Markup
